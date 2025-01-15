@@ -122,29 +122,17 @@ app.route("/api/users/:id")
         return res.json(user)
     })
     .patch(async(req,res)=>{
-        const user = await User.findById(req.params.id)
-        if (!user) {
-            return res.status(404).send("User not found")
-        }
         const body = req.body;
-        // console.log('Id',id)
-        // console.log('Body',body)
-        if(body.first_name){
-            user.first_name = body.first_name
+        const user = await User.findByIdAndUpdate(req.params.id,{
+            first_name: body.first_name,
+            last_name: body.last_name,
+            email: body.email,
+            gender: body.gender,
+            job_title: body.job_title
+        })
+        if (!user) {
+            return res.status(404).send("Update unsuccessful")
         }
-        if(body.last_name){
-            user.last_name = body.last_name
-        }
-        if(body.email){
-            user.email = body.email
-        }
-        if(body.gender){
-            user.gender = body.gender
-        }
-        if(body.job_title){
-            user.job_title = body.job_title
-        }
-        await user.save();
         return res.status(201).json({message:"User updated"});
     })
     .delete(async(req,res)=>{
