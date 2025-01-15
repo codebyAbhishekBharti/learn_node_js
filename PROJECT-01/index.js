@@ -16,7 +16,8 @@ app.use((req,res,next)=>{
 app.use((req,res,next)=>{
     console.log('Hello from Middle ware 2')
     console.log(req.myUserName)
-    return res.end("Hello from Middle ware 2")
+    // return res.end("Hello from Middle ware 2")
+    next()
 })
 // Routes
 app.get('/', (req, res) => {
@@ -33,6 +34,8 @@ app.get("/users", (req, res) => {
 })
 
 app.get("/api/users", (req, res) => {
+    console.log(req.headers)
+    res.setHeader('X-myName', 'Abhishek Bharti')
     return res.json(users)
 })
 
